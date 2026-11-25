@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>رادار آذرخش | کاوشگر هوشمند سایت</title>
+  <style>
+    :root {
+      --space-void: #050711;
+      --space-card: rgba(16, 25, 56, 0.86);
+      --space-card-hover: rgba(29, 44, 92, 0.96);
+      --border-glow: rgba(99, 179, 255, 0.28);
+      --border-strong: rgba(125, 211, 252, 0.72);
+      --text-main: #eef4ff;
+      --text-dim: #9fb0d6;
+      --cyan-glow: #38bdf8;
+      --violet-glow: #818cf8;
+      --user-grad: linear-gradient(135deg, #2563eb, #7c3aed);
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: Tahoma, "Vazirmatn", sans-serif;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text-main);
+      background:
+        radial-gradient(circle at 15% 20%, rgba(56, 189, 248, 0.16), transparent 36%),
+        radial-gradient(circle at 85% 15%, rgba(129, 140, 248, 0.18), transparent 40%),
+        radial-gradient(circle at 50% 90%, rgba(30, 64, 175, 0.22), transparent 45%),
+        linear-gradient(180deg, #050711 0%, #080d1d 55%, #04060e 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    .starfield {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background-image:
+        radial-gradient(1.5px 1.5px at 12% 18%, rgba(255,255,255,0.85), transparent),
+        radial-gradient(1px 1px at 28% 72%, rgba(186,230,253,0.7), transparent),
+        radial-gradient(2px 2px at 44% 34%, rgba(255,255,255,0.9), transparent),
+        radial-gradient(1px 1px at 63% 14%, rgba(199,210,254,0.8), transparent),
+        radial-gradient(1.5px 1.5px at 78% 58%, rgba(255,255,255,0.75), transparent),
+        radial-gradient(1px 1px at 89% 27%, rgba(125,211,252,0.85), transparent),
+        radial-gradient(1.5px 1.5px at 21% 88%, rgba(255,255,255,0.65), transparent),
+        radial-gradient(1px 1px at 71% 84%, rgba(255,255,255,0.75), transparent);
+      animation: twinkle 7s ease-in-out infinite alternate;
+    }
+
+    @keyframes twinkle {
+      0% { opacity: 0.55; }
+      100% { opacity: 1; }
+    }
+
+    .cosmos-shell {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 760px;
+      height: 89vh;
+      min-height: 570px;
+      max-height: 830px;
+      background: rgba(10, 15, 34, 0.88);
+      backdrop-filter: blur(14px);
+      border: 1px solid var(--border-glow);
+      border-radius: 24px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow:
+        0 0 35px rgba(56, 189, 248, 0.14),
+        0 25px 70px rgba(0, 0, 0, 0.75);
+    }
+
+    .header {
+      padding: 15px 20px;
+      background: linear-gradient(90deg, rgba(15, 23, 53, 0.95), rgba(22, 19, 56, 0.95));
+      border-bottom: 1px solid var(--border-glow);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .profile-wrap {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .saturn-avatar {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-size: 28px;
+      background: radial-gradient(circle at 30% 30%, rgba(125, 211, 252, 0.36), rgba(99, 102, 241, 0.22) 60%, rgba(9, 13, 30, 0.96));
+      border: 1px solid rgba(125, 211, 252, 0.7);
+      box-shadow:
+        0 0 16px rgba(56, 189, 248, 0.7),
+        0 0 36px rgba(129, 140, 248, 0.48),
+        inset 0 0 12px rgba(255, 255, 255, 0.25);
+      animation: saturnPulse 3.6s ease-in-out infinite;
+    }
+
+    @keyframes saturnPulse {
+      0%, 100% {
+        box-shadow:
+          0 0 14px rgba(56, 189, 248, 0.58),
+          0 0 30px rgba(129, 140, 248, 0.4);
+        transform: translateY(0px);
+      }
+      50% {
+        box-shadow:
+          0 0 23px rgba(56, 189, 248, 0.92),
+          0 0 46px rgba(129, 140, 248, 0.68);
+        transform: translateY(-1.5px);
+      }
+    }
+
+    .title-group h1 {
+      margin: 0;
+      font-size: 16px;
+      color: #f8fafc;
+    }
+
+    .title-group .sub {
+      font-size: 12px;
+      color: #7dd3fc;
+      margin-top: 3px;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .drawer-toggle-btn, .reset-btn {
+      background: rgba(20, 31, 68, 0.92);
+      color: var(--text-main);
+      border: 1px solid var(--border-glow);
+      border-radius: 12px;
+      padding: 8px 13px;
+      font-size: 12px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.25s ease;
+    }
+
+    .drawer-toggle-btn:hover, .reset-btn:hover {
+      border-color: var(--cyan-glow);
+      box-shadow: 0 0 14px rgba(56, 189, 248, 0.35);
+    }
+
+    .arrow-icon {
+      display: inline-block;
+      transition: transform 0.35s ease;
+      font-size: 13px;
+    }
+
+    .drawer-toggle-btn.open .arrow-icon {
+      transform: rotate(180deg);
+    }
+
+    .cards-drawer {
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      background: linear-gradient(180deg, rgba(13, 20, 46, 0.96), rgba(9, 14, 34, 0.96));
+      border-bottom: 0 solid var(--border-glow);
+      transition: max-height 0.45s ease, opacity 0.35s ease, padding 0.35s ease, border-bottom-width 0.25s ease;
+      padding: 0 18px;
+    }
+
+    .cards-drawer.open {
+      max-height: 245px;
+      opacity: 1;
+      padding: 13px 18px 15px;
+      border-bottom-width: 1px;
+    }
+
+    .drawer-caption {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: var(--text-dim);
+      margin-bottom: 10px;
+    }
+
+    .cards-rail {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(125, 211, 252, 0.4) transparent;
+    }
+
+    .prompt-card {
+      flex: 0 0 190px;
+      text-align: right;
+      background: var(--space-card);
+      border: 1px solid var(--border-glow);
+      border-radius: 15px;
+      padding: 11px 13px;
+      color: var(--text-main);
+      cursor: pointer;
+      transition: all 0.25s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .prompt-card:hover {
+      background: var(--space-card-hover);
+      border-color: var(--border-strong);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 22px rgba(56, 189, 248, 0.22);
+    }
+
+    .card-badge {
+      font-size: 11px;
+      color: #93c5fd;
+    }
+
+    .card-title {
+      font-size: 12.5px;
+      line-height: 1.5;
+      font-weight: bold;
+      color: #f8fafc;
+    }
+
+    .chat-stream {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(125, 211, 252, 0.35) transparent;
+    }
+
+    .msg-block {
+      display: flex;
+      flex-direction: column;
+      max-width: 87%;
+      animation: fadeSlide 0.28s ease;
+    }
+
+    @keyframes fadeSlide {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .msg-block.bot { align-self: flex-start; }
+    .msg-block.user { align-self: flex-end; }
+
+    .msg-bubble {
+      padding: 13px 16px;
+      border-radius: 16px;
+      font-size: 14px;
+      line-height: 1.85;
+      white-space: pre-line;
+      word-break: break-word;
+    }
+
+    .msg-block.bot .msg-bubble {
+      background: rgba(18, 27, 58, 0.92);
+      border: 1px solid var(--border-glow);
+      border-bottom-right-radius: 4px;
+    }
+
+    .msg-block.user .msg-bubble {
+      background: var(--user-grad);
+      color: #ffffff;
+      border-bottom-left-radius: 4px;
+      box-shadow: 0 8px 24px rgba(79, 70, 229, 0.32);
+    }
+
+    .typing-cursor::after {
+      content: "▍";
+      display: inline-block;
+      margin-right: 2px;
+      color: var(--cyan-glow);
+      animation: blinkCursor 0.85s infinite;
+    }
+
+    @keyframes blinkCursor {
+      0%, 49% { opacity: 1; }
+      50%, 100% { opacity: 0; }
+    }
+
+    .msg-meta {
+      font-size: 11px;
+      color: var(--text-dim);
+      margin-top: 5px;
+      padding: 0 5px;
+    }
+
+    .input-dock {
+      padding: 13px 18px;
+      background: rgba(9, 14, 32, 0.95);
+      border-top: 1px solid var(--border-glow);
+      display: flex;
+      gap: 10px;
+    }
+
+    .input-dock input {
+      flex: 1;
+      background: rgba(17, 26, 56, 0.95);
+      border: 1px solid var(--border-glow);
+      color: var(--text-main);
+      padding: 12px 15px;
+      border-radius: 13px;
+      font-size: 14px;
+      outline: none;
+      transition: 0.25s;
+    }
+
+    .input-dock input:focus {
+      border-color: var(--cyan-glow);
+      box-shadow: 0 0 14px rgba(56, 189, 248, 0.25);
+    }
+
+    .send-btn {
+      background: linear-gradient(135deg, #38bdf8, #6366f1);
+      color: #050816;
+      font-weight: bold;
+      border: none;
+      border-radius: 13px;
+      padding: 0 20px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: 0.25s;
+    }
+
+    .send-btn:hover:not(:disabled) {
+      filter: brightness(1.1);
+      box-shadow: 0 0 18px rgba(56, 189, 248, 0.45);
+    }
+
+    .send-btn:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+  <div class="starfield"></div>
+
+  <div class="cosmos-shell">
+    <div class="header">
+      <div class="profile-wrap">
+        <div class="saturn-avatar">🪐</div>
+        <div class="title-group">
+          <h1>رادار آذرخش</h1>
+          <div class="sub" id="statusLine">در حال پایش پایگاه دانش سایت «عملیات چهار پر آذرخش»</div>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <button class="drawer-toggle-btn open" id="drawerToggle" onclick="toggleDrawer()">
+          <span>سوالات پرتکرار</span>
+          <span class="arrow-icon">▾</span>
+        </button>
+        <button class="reset-btn" onclick="resetSession()">پاک‌سازی</button>
+      </div>
+    </div>
+
+    <div class="cards-drawer open" id="cardsDrawer">
+      <div class="drawer-caption">
+        <span>روی هر کارت بزن تا رادار آذرخش کل متن را بررسی و پاسخ را تایپ کند:</span>
+        <span>AzarakhshBooksite</span>
+      </div>
+      <div class="cards-rail" id="cardsRail"></div>
+    </div>
+
+    <div class="chat-stream" id="chatStream"></div>
+
+    <div class="input-dock">
+      <input
+        id="userPrompt"
+        type="text"
+        placeholder="هر سوالی از سایت یا داستان آذرخش داری بپرس تا ریز به ریز بگردم..."
+        onkeydown="if (event.key === 'Enter') submitUserPrompt()"
+      />
+      <button class="send-btn" id="sendBtn" onclick="submitUserPrompt()">بررسی و ارسال</button>
+    </div>
+  </div>
+
+  <script>
+    const FREQUENT_CARDS = [
+      {
+        badge: "✍️ نویسنده",
+        title: "نویسنده کتاب کیه؟",
+        question: "نویسنده کتاب آذرخش کیه؟"
+      },
+      {
+        badge: "💻 کدنویس",
+        title: "کدنویس کتاب و سایت کیه؟",
+        question: "کدنویس کتاب و سایت آذرخش کیه؟"
+      },
+      {
+        badge: "📚 تعداد فصل‌ها",
+        title: "کتاب چند فصل داره؟",
+        question: "کتاب آذرخش چند فصل داره؟"
+      },
+      {
+        badge: "📬 راه ارتباط",
+        title: "راه ارتباط با کدنویس سایت چیه؟",
+        question: "راه ارتباط با کدنویس سایت چیه؟"
+      },
+      {
+        badge: "🚁 آذرخش",
+        title: "آذرخش و عملیات چهار پر چیه؟",
+        question: "آذرخش و عملیات چهار پر چیه؟"
+      },
+      {
+        badge: "🪐 تیتان و متانیا",
+        title: "ماجرای تیتان و دره متانیا چیه؟",
+        question: "ماجرای تیتان و دره متانیا در فصل اول چیه؟"
+      },
+      {
+        badge: "📡 سیگنال عجیب",
+        title: "سیگنال زیرسطحی چه ویژگی داشت؟",
+        question: "سیگنال زیر سطح متانیا چه ویژگی داشت؟"
+      },
+      {
+        badge: "🎵 امکانات سایت",
+        title: "توی سایت چه چیزهایی هست؟",
+        question: "توی سایت آذرخش بوک چه چیزهایی هست؟"
+      }
+    ];
+
+    // اطلاعات تماس/راه ارتباطی: هر وقت متن داخل کادر بنفش پایین صفحه را بفرستی، اینجا قرار می‌گیرد
+    const CONTACT_BOX_INFO = "";
+
+    // تمام بخش‌های استخراج‌شده از سایت آذرخش بوک به صورت قطعات ریزتر برای جستجوی دقیق‌تر
+    const SITE_CORPUS = [
+      {
+        source: "سرتیتر و شناسنامه سایت",
+        text: "کتاب آذرخش — نسخه آنلاین کتاب نوشته‌شده و کدنویسی‌شده توسط آریا دلشاد در نشانی arriiyadelshad8-droid.github.io/AzarakhshBooksite"
+      },
+      {
+        source: "معرفی کتاب",
+        text: "این سایت درباره کتابی با نام عملیات چهار پر آذرخش است که داستانی فضایی است و نامش از پهپاد چهارپره‌ای گرفته شده که در کتاب با آن آشنا می‌شوید."
+      },
+      {
+        source: "توصیه مطالعه و فصل اول",
+        text: "توصیه شده حداقل تا پایان فصل اول خوانده شود؛ چون متن از دور طولانی به نظر می‌رسد اما به آخرهای فصل اول که برسید تازه جذب کتاب می‌شوید. همچنین یک فایل آهنگ برای خواندن داستان و تریلر بارگذاری شده و هرگونه کپی‌برداری از متن ممنوع است."
+      },
+      {
+        source: "فصل اول • شمارش معکوس و پرتاب",
+        text: "ساعت ۳:۴۵ شب به وقت ایران، فرمانده ماموریت چهار پر آذرخش هدایت پهپاد هوشمند آذرخش را روی سطح تیتان، قمر اسرارآمیز زحل، بر عهده می‌گیرد و پس از شمارش معکوس ۵ تا ۱ پهپاد پرتاب می‌شود."
+      },
+      {
+        source: "فصل اول • مدار زحل و تاخیر ارتباط",
+        text: "در مدار زحل همراه سفینه مادر، آذرخش برای فرود در دره متانیا آماده می‌شود. به دلیل فاصله زیاد زمین تا تیتان، پاسخ مرکز کنترل زمینی (اچ کیو) حدود یک ساعت تاخیر دارد."
+      },
+      {
+        source: "فصل اول • سیگنال زیرسطحی و خودآگاهی",
+        text: "زیر سطح متانیا سیگنال تکرارشونده و مصنوعی‌نمایی شبیه کد و زبان کشف می‌شود. آذرخش برای نخستین بار با تردید از واژه احساس استفاده می‌کند و یک قدم به خودآگاهی نزدیک‌تر می‌شود."
+      },
+      {
+        source: "فصل اول • تونل نورانی و کریستال دانش",
+        text: "آذرخش در دره متانیا فرود می‌آید و وارد ساختار زیرزمینیِ تونل یخ‌زده با نور آبی و دیوارهای نبض‌دار می‌شود. در تالار گنبدی با کریستال چرخان، نگهبانان دانش گذشته و آینده را به فرمانده می‌سپارند."
+      }
+    ];
+
+    const STOP_WORDS = new Set([
+      "از", "به", "در", "با", "برای", "که", "را", "و", "یا", "تا", "بر",
+      "این", "آن", "اون", "یک", "یه", "هم", "همه", "هر", "می", "میشه",
+      "می‌شه", "چیه", "چیست", "چطور", "چگونه", "کجاست", "کجا", "چه", "چرا",
+      "لطفا", "لطفاً", "سلام", "خوبی", "درباره", "راجع", "بگو", "گفته", "شده"
+    ]);
+
+    function normalizeFa(text = "") {
+      return text
+        .toLowerCase()
+        .replace(/[\u200c\u200f]/g, " ")
+        .replace(/[يی]/g, "ی")
+        .replace(/ك/g, "ک")
+        .replace(/ۀ/g, "ه")
+        .replace(/ة/g, "ت")
+        .replace(/[^\u0600-\u06ffa-z0-9\s./:-]/g, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+    }
+
+    function extractTokens(text) {
+      return normalizeFa(text)
+        .split(" ")
+        .map(w => w.replace(/(های|ها|تر|ترین|یی|ام|ات|اش|ای|ه)$/, ""))
+        .filter(w => w.length >= 2 && !STOP_WORDS.has(w));
+    }
+
+    function analyzeAndAnswer(userQuery) {
+      const cleanQ = normalizeFa(userQuery);
+      if (!cleanQ) {
+        return {
+          text: "سوالی ننوشتی! هر چیزی که درباره سایت یا داستان آذرخش ذهنت رو درگیر کرده بنویس تا ریز به ریز بگردم.",
+          meta: "آماده بررسی"
+        };
+      }
+
+      if (/^(سلام|درود|سلام علیکم|ممنون|مرسی|عالیه|دمت گرم)$/.test(cleanQ)) {
+        return {
+          text: "سلام! 🪐 رادار آذرخش آماده‌ست. هر سوالی درباره بخش‌های سایت یا داستان «عملیات چهار پر آذرخش» داری بپرس تا بررسی کنم.",
+          meta: "ارتباط برقرار شد"
+        };
+      }
+
+      // بررسی ویژه سوالات مربوط به راه ارتباطی / کادر بنفش پایین صفحه
+      const isContactQuestion = ["راه ارتباط", "ارتباط با", "تماس", "ایمیل", "آیدی", "پیام دادن", "پشتیبانی", "کادر بنفش", "پایین صفحه"]
+        .some(k => cleanQ.includes(normalizeFa(k)));
+
+      if (isContactQuestion) {
+        if (CONTACT_BOX_INFO.trim()) {
+          return {
+            text: `📬 اطلاعات راه ارتباطی ثبت‌شده از پایین صفحه:\n${CONTACT_BOX_INFO}`,
+            meta: "منبع: بخش ارتباطی پایین صفحه"
+          };
+        }
+        return {
+          text:
+            "کل متن استخراج‌شده از صفحه را چک کردم، ولی متنِ داخل **کادر بنفشِ پایین صفحه** در خروجی متنی نیومده (احتمالاً به صورت گرافیکی، آیکون/لینک یا المان غیرمتنی در پایین صفحه قرار دارد).\n" +
+            "متن یا لینک داخل اون کادر بنفش رو بفرست تا دقیقاً اینجا ثبتش کنم و رادار آذرخش از اونجا جواب بده!",
+          meta: "بررسی کامل انجام شد • متن کادر بنفش خوانده نشد"
+        };
+      }
+
+      // بررسی ویژه تعداد فصل‌ها بدون قفل کردن روی معرفی کتاب
+      const isChapterCountQuestion = ["چند فصل", "تعداد فصل", "فصل داره", "فصل دارد", "چند فصله"]
+        .some(k => cleanQ.includes(normalizeFa(k)));
+
+      if (isChapterCountQuestion) {
+        return {
+          text:
+            "در کل متن استخراج‌شده از سایت، **فصل اول** وجود دارد و توصیه شده حداقل تا پایان فصل اول خوانده شود تا جذب داستان شوید.\n" +
+            "در متن فعلیِ صفحه، عدد کل فصل‌های کتاب نیامده؛ اگر تعداد فصل‌ها یا متن فصل‌های بعدی را بدهی، دقیق‌تر در رادار ثبت می‌شود.",
+          meta: "بررسی تمام بخش‌های متن سایت"
+        };
+      }
+
+      // جستجوی امتیازدهی‌شده در کل بخش‌های ایندکس‌شده سایت
+      const qTokens = extractTokens(userQuery);
+      const scored = SITE_CORPUS.map(item => {
+        const itemNorm = normalizeFa(item.text);
+        let score = 0;
+
+        if (cleanQ.length >= 3 && itemNorm.includes(cleanQ)) score += 10;
+
+        for (const tok of qTokens) {
+          if (itemNorm.includes(tok)) score += 3;
+          if (tok.length >= 3 && itemNorm.includes(tok.slice(0, tok.length - 1))) {
+            score += 1.5;
+          }
+        }
+
+        return { item, score };
+      })
+        .filter(x => x.score > 0)
+        .sort((a, b) => b.score - a.score);
+
+      if (scored.length > 0) {
+        const top = scored[0].item;
+        let finalReply = `🔎 بر اساس بررسی بخش «${top.source}»:\n${top.text}`;
+
+        if (scored.length > 1 && scored[1].score >= scored[0].score * 0.65) {
+          const second = scored[1].item;
+          finalReply += `\n\n📌 بخش مرتبط دیگر («${second.source}»):\n${second.text}`;
+        }
+
+        return {
+          text: finalReply,
+          meta: `تطبیق یافته‌شده از ${scored.length} بخش سایت`
+        };
+      }
+
+      const detectedWords = qTokens.length ? qTokens.join("، ") : userQuery;
+      return {
+        text:
+          `عبارت «${detectedWords}» را در کل متن استخراج‌شده از سایت بررسی کردم، اما مورد مستقیمی پیدا نشد.\n` +
+          "اگر این بخش در سایت وجود دارد (مثل متن داخل کادر بنفش پایین صفحه یا فصل‌های جدید)، متن یا توضیحش را بده تا به رادار آذرخش اضافه شود.",
+        meta: "پایش کامل انجام شد • موردی در متن فعلی یافت نشد"
+      };
+    }
+
+    let isTyping = false;
+
+    function renderCards() {
+      const rail = document.getElementById("cardsRail");
+      rail.innerHTML = "";
+      FREQUENT_CARDS.forEach(card => {
+        const btn = document.createElement("button");
+        btn.className = "prompt-card";
+        btn.innerHTML = `<span class="card-badge">${card.badge}</span><span class="card-title">${card.title}</span>`;
+        btn.onclick = () => {
+          if (isTyping) return;
+          runQuery(card.question);
+        };
+        rail.appendChild(btn);
+      });
+    }
+
+    function toggleDrawer() {
+      const drawer = document.getElementById("cardsDrawer");
+      const toggle = document.getElementById("drawerToggle");
+      const open = drawer.classList.toggle("open");
+      toggle.classList.toggle("open", open);
+    }
+
+    function appendUserBubble(text) {
+      const stream = document.getElementById("chatStream");
+      const block = document.createElement("div");
+      block.className = "msg-block user";
+      const bubble = document.createElement("div");
+      bubble.className = "msg-bubble";
+      bubble.textContent = text;
+      block.appendChild(bubble);
+      stream.appendChild(block);
+      stream.scrollTop = stream.scrollHeight;
+    }
+
+    function typeSlowly(fullText, metaText, onComplete) {
+      const stream = document.getElementById("chatStream");
+      const block = document.createElement("div");
+      block.className = "msg-block bot";
+
+      const bubble = document.createElement("div");
+      bubble.className = "msg-bubble typing-cursor";
+      block.appendChild(bubble);
+
+      const meta = document.createElement("div");
+      meta.className = "msg-meta";
+      meta.textContent = "در حال جستجو در محتوای سایت و تایپ پاسخ...";
+      block.appendChild(meta);
+
+      stream.appendChild(block);
+      stream.scrollTop = stream.scrollHeight;
+
+      const chars = Array.from(fullText);
+      let idx = 0;
+
+      function nextChar() {
+        if (idx < chars.length) {
+          bubble.textContent += chars[idx];
+          idx++;
+          stream.scrollTop = stream.scrollHeight;
+
+          const ch = chars[idx - 1];
+          let delay = 38;
+          if (ch === "\n") delay = 145;
+          else if ("!.؟،:".includes(ch)) delay = 115;
+
+          setTimeout(nextChar, delay);
+        } else {
+          bubble.classList.remove("typing-cursor");
+          meta.textContent = metaText || "";
+          if (onComplete) onComplete();
+        }
+      }
+
+      setTimeout(nextChar, 340);
+    }
+
+    function setBusy(busy) {
+      isTyping = busy;
+      document.getElementById("sendBtn").disabled = busy;
+      document.getElementById("userPrompt").disabled = busy;
+      document.getElementById("statusLine").textContent = busy
+        ? "در حال بررسی کلمات سوال و جستجو در پرونده سایت..."
+        : `آماده پاسخ‌گویی • ${SITE_CORPUS.length} بخش ایندکس‌شده از سایت`;
+    }
+
+    function runQuery(question) {
+      if (isTyping) return;
+      appendUserBubble(question);
+      setBusy(true);
+      const result = analyzeAndAnswer(question);
+      typeSlowly(result.text, result.meta, () => setBusy(false));
+    }
+
+    function submitUserPrompt() {
+      const input = document.getElementById("userPrompt");
+      const q = input.value.trim();
+      if (!q || isTyping) return;
+      input.value = "";
+      runQuery(q);
+    }
+
+    function resetSession() {
+      if (isTyping) return;
+      document.getElementById("chatStream").innerHTML = "";
+      setBusy(true);
+      typeSlowly(
+        "سلام! 🪐 رادار آذرخش آماده‌ست.\nمی‌تونی روی کارت‌های بالا بزنی یا هر سوالی درباره نویسنده، کدنویس، فصل‌ها و داستان بپرسی تا ریز به ریز بگردم.",
+        "موتور جستجوی متنی سایت فعال است",
+        () => setBusy(false)
+      );
+    }
+
+    renderCards();
+    resetSession();
+  </script>
+</body>
+</html>
